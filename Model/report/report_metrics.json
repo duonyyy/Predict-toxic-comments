@@ -1,0 +1,287 @@
+{
+  "dataset_summary": {
+    "total_samples": 48670,
+    "toxicity_distribution": {
+      "NON-TOXIC": 42810,
+      "TOXIC": 5860
+    },
+    "expression_type_distribution": {
+      "EXPLICIT": 4999,
+      "IMPLICIT": 861
+    }
+  },
+  "split_summary": {
+    "train_count": 38936,
+    "dev_count": 4867,
+    "test_count": 4867,
+    "train_toxic": 4688,
+    "dev_toxic": 586,
+    "test_toxic": 586
+  },
+  "best_models": {
+    "task1": {
+      "model": "PhoBERT",
+      "macro_f1": 0.7943
+    },
+    "task2": {
+      "model": "XLM-R",
+      "macro_f1": 0.6978
+    }
+  },
+  "test_results_task1": [
+    {
+      "Model": "TextCNN",
+      "Architecture": "1D-CNN (Word Embeddings)",
+      "Status": "COMPLETED",
+      "Accuracy": 0.8956,
+      "Macro_Precision": 0.7544,
+      "Macro_Recall": 0.7308,
+      "Macro_F1": 0.7417,
+      "Weighted_F1": 0.8931
+    },
+    {
+      "Model": "PhoBERT",
+      "Architecture": "Pretrained RoBERTa (Monolingual)",
+      "Status": "COMPLETED",
+      "Accuracy": 0.9176,
+      "Macro_Precision": 0.8129,
+      "Macro_Recall": 0.7786,
+      "Macro_F1": 0.7943,
+      "Weighted_F1": 0.9152
+    },
+    {
+      "Model": "ViDeBERTa",
+      "Architecture": "Pretrained DeBERTa (Disentangled)",
+      "Status": "COMPLETED",
+      "Accuracy": 0.7658,
+      "Macro_Precision": 0.553,
+      "Macro_Recall": 0.5782,
+      "Macro_F1": 0.5575,
+      "Weighted_F1": 0.788
+    },
+    {
+      "Model": "XLM-R",
+      "Architecture": "Pretrained RoBERTa (Multilingual)",
+      "Status": "COMPLETED",
+      "Accuracy": 0.9088,
+      "Macro_Precision": 0.7841,
+      "Macro_Recall": 0.7891,
+      "Macro_F1": 0.7865,
+      "Weighted_F1": 0.9092
+    }
+  ],
+  "test_results_task2": [
+    {
+      "Model": "TextCNN",
+      "Architecture": "1D-CNN (Word Embeddings)",
+      "Status": "COMPLETED",
+      "Accuracy": 0.715,
+      "Macro_Precision": 0.6004,
+      "Macro_Recall": 0.6741,
+      "Macro_F1": 0.6013,
+      "Weighted_F1": 0.7517
+    },
+    {
+      "Model": "PhoBERT",
+      "Architecture": "Pretrained RoBERTa (Monolingual)",
+      "Status": "COMPLETED",
+      "Accuracy": 0.8003,
+      "Macro_Precision": 0.6513,
+      "Macro_Recall": 0.7097,
+      "Macro_F1": 0.6692,
+      "Weighted_F1": 0.8163
+    },
+    {
+      "Model": "ViDeBERTa",
+      "Architecture": "Pretrained DeBERTa (Disentangled)",
+      "Status": "COMPLETED",
+      "Accuracy": 0.8106,
+      "Macro_Precision": 0.5409,
+      "Macro_Recall": 0.5231,
+      "Macro_F1": 0.523,
+      "Weighted_F1": 0.7847
+    },
+    {
+      "Model": "XLM-R",
+      "Architecture": "Pretrained RoBERTa (Multilingual)",
+      "Status": "COMPLETED",
+      "Accuracy": 0.8379,
+      "Macro_Precision": 0.6865,
+      "Macro_Recall": 0.7124,
+      "Macro_F1": 0.6978,
+      "Weighted_F1": 0.8432
+    }
+  ],
+  "dev_results": [
+    {
+      "model": "TextCNN",
+      "task": "Task 1 (Toxicity)",
+      "best_epoch": 7,
+      "accuracy": 0.8868,
+      "macro_precision": 0.8868,
+      "macro_recall": 0.8868,
+      "macro_f1": 0.7549,
+      "weighted_f1": 0.7549,
+      "training_time_seconds": 0.0,
+      "checkpoint_path": "artifacts/textcnn/task1/best_model"
+    },
+    {
+      "model": "TextCNN",
+      "task": "Task 2 (Expression)",
+      "best_epoch": 6,
+      "accuracy": 0.8396,
+      "macro_precision": 0.8396,
+      "macro_recall": 0.8396,
+      "macro_f1": 0.5987,
+      "weighted_f1": 0.5987,
+      "training_time_seconds": 0.0,
+      "checkpoint_path": "artifacts/textcnn/task2/best_model"
+    }
+  ],
+  "per_class_metrics": [
+    {
+      "task": "Task 1 (Toxicity)",
+      "model": "TextCNN",
+      "label": "NON-TOXIC",
+      "precision": 0.9344,
+      "recall": 0.9479,
+      "f1": 0.9411,
+      "support": 4281
+    },
+    {
+      "task": "Task 1 (Toxicity)",
+      "model": "TextCNN",
+      "label": "TOXIC",
+      "precision": 0.5744,
+      "recall": 0.5137,
+      "f1": 0.5423,
+      "support": 586
+    },
+    {
+      "task": "Task 2 (Expression)",
+      "model": "TextCNN",
+      "label": "EXPLICIT",
+      "precision": 0.9173,
+      "recall": 0.732,
+      "f1": 0.8142,
+      "support": 500
+    },
+    {
+      "task": "Task 2 (Expression)",
+      "model": "TextCNN",
+      "label": "IMPLICIT",
+      "precision": 0.2834,
+      "recall": 0.6163,
+      "f1": 0.3883,
+      "support": 86
+    },
+    {
+      "task": "Task 1 (Toxicity)",
+      "model": "PhoBERT",
+      "label": "NON-TOXIC",
+      "precision": 0.9456,
+      "recall": 0.9617,
+      "f1": 0.9536,
+      "support": 4281
+    },
+    {
+      "task": "Task 1 (Toxicity)",
+      "model": "PhoBERT",
+      "label": "TOXIC",
+      "precision": 0.6803,
+      "recall": 0.5956,
+      "f1": 0.6351,
+      "support": 586
+    },
+    {
+      "task": "Task 2 (Expression)",
+      "model": "PhoBERT",
+      "label": "EXPLICIT",
+      "precision": 0.9209,
+      "recall": 0.838,
+      "f1": 0.8775,
+      "support": 500
+    },
+    {
+      "task": "Task 2 (Expression)",
+      "model": "PhoBERT",
+      "label": "IMPLICIT",
+      "precision": 0.3817,
+      "recall": 0.5814,
+      "f1": 0.4608,
+      "support": 86
+    },
+    {
+      "task": "Task 1 (Toxicity)",
+      "model": "ViDeBERTa",
+      "label": "NON-TOXIC",
+      "precision": 0.9001,
+      "recall": 0.8253,
+      "f1": 0.8611,
+      "support": 4281
+    },
+    {
+      "task": "Task 1 (Toxicity)",
+      "model": "ViDeBERTa",
+      "label": "TOXIC",
+      "precision": 0.2059,
+      "recall": 0.3311,
+      "f1": 0.2539,
+      "support": 586
+    },
+    {
+      "task": "Task 2 (Expression)",
+      "model": "ViDeBERTa",
+      "label": "EXPLICIT",
+      "precision": 0.8595,
+      "recall": 0.93,
+      "f1": 0.8934,
+      "support": 500
+    },
+    {
+      "task": "Task 2 (Expression)",
+      "model": "ViDeBERTa",
+      "label": "IMPLICIT",
+      "precision": 0.2222,
+      "recall": 0.1163,
+      "f1": 0.1527,
+      "support": 86
+    },
+    {
+      "task": "Task 1 (Toxicity)",
+      "model": "XLM-R",
+      "label": "NON-TOXIC",
+      "precision": 0.9494,
+      "recall": 0.9467,
+      "f1": 0.9481,
+      "support": 4281
+    },
+    {
+      "task": "Task 1 (Toxicity)",
+      "model": "XLM-R",
+      "label": "TOXIC",
+      "precision": 0.6187,
+      "recall": 0.6314,
+      "f1": 0.625,
+      "support": 586
+    },
+    {
+      "task": "Task 2 (Expression)",
+      "model": "XLM-R",
+      "label": "EXPLICIT",
+      "precision": 0.9175,
+      "recall": 0.89,
+      "f1": 0.9036,
+      "support": 500
+    },
+    {
+      "task": "Task 2 (Expression)",
+      "model": "XLM-R",
+      "label": "IMPLICIT",
+      "precision": 0.4554,
+      "recall": 0.5349,
+      "f1": 0.492,
+      "support": 86
+    }
+  ]
+}

@@ -24,7 +24,7 @@ DEFAULT_GROUP_URL = (
     
 )
 
-#142
+#240
 #  https://www.facebook.com/groups/mixigaming
 # https://www.facebook.com/groups/TruongNguoiTa
 #  https://www.facebook.com/groups/1228169470849996
@@ -213,61 +213,163 @@ def expand_post_text(page: Page) -> None:
         pass
 
 
-def select_all_comments(page: Page) -> None:
-    """Best effort: chuyển từ Phù hợp nhất sang Tất cả bình luận."""
+def select_all_comments(page: Page) -> bool:
+    """Chuyển bộ lọc comment sang ``Tất cả bình luận`` nếu Facebook hiển thị bộ lọc."""
     try:
-        opened = page.evaluate(
+        result = page.evaluate(
             """() => {
-                const controls = document.querySelectorAll(
-                    'div[role="button"], span[role="button"], button'
-                );
-                for (const control of controls) {
-                    const text = (control.innerText || '').trim();
-                    if (text === 'Phù hợp nhất' || text === 'Most relevant') {
-                        control.click();
-                        return true;
-                    }
+                const selector = [
+                    'button', '[role="button"]', '[role="menuitem"]',
+                    '[role="menuitemradio"]', '[role="option"]'
+                ].join(',');
+                const controls = [...document.querySelectorAll(selector)];
+                const value = el => [
+                    el.innerText || '', el.getAttribute('aria-label') || '',
+                    el.getAttribute('title') || ''
+                ].join(' ').replace(/\\s+/g, ' ').trim().toLowerCase();
+                const allComments = el => {
+                    const text = value(el);
+                    return text === 'tất cả bình luận'
+                        || text === 'all comments'
+                        || (/(tất cả|all)/i.test(text)
+                            && /(bình luận|comment)/i.test(text));
+                };
+                const current = controls.find(el => allComments(el)
+                    && (el.getAttribute('aria-checked') === 'true'
+                        || el.getAttribute('aria-selected') === 'true'));
+                if (current) return { selected: true, opened: false };
+
+                const relevant = controls.find(el => {
+                    const text = value(el);
+                    return text === 'phù hợp nhất' || text === 'most relevant'
+                        || (/(phù hợp|relevant)/i.test(text)
+                            && /(bình luận|comment)/i.test(text));
+                });
+                if (!relevant) {
+                    return {
+                        selected: controls.some(allComments),
+                        opened: false
+                    };
                 }
-                return false;
+                relevant.click();
+                return { selected: false, opened: true };
             }"""
-        )
-        if not opened:
-            return
+        ) or {}
+        if result.get("selected"):
+            return True
+        if not result.get("opened"):
+            return False
+
         page.wait_for_timeout(500)
-        page.evaluate(
+        selected = page.evaluate(
             """() => {
-                const controls = document.querySelectorAll(
-                    '[role="menuitem"], div[role="button"], span[role="button"]'
-                );
-                for (const control of controls) {
-                    const text = (control.innerText || '').trim();
-                    if (text === 'Tất cả bình luận' || text === 'All comments') {
-                        control.click();
-                        return true;
-                    }
-                }
-                return false;
+                const selector = [
+                    'button', '[role="button"]', '[role="menuitem"]',
+                    '[role="menuitemradio"]', '[role="option"]'
+                ].join(',');
+                const value = el => [
+                    el.innerText || '', el.getAttribute('aria-label') || '',
+                    el.getAttribute('title') || ''
+                ].join(' ').replace(/\\s+/g, ' ').trim().toLowerCase();
+                const item = [...document.querySelectorAll(selector)].find(el => {
+                    const text = value(el);
+                    return text === 'tất cả bình luận' || text === 'all comments'
+                        || (/(tất cả|all)/i.test(text)
+                            && /(bình luận|comment)/i.test(text));
+                });
+                if (!item) return false;
+                item.click();
+                return true;
             }"""
         )
-        page.wait_for_timeout(700)
+        page.wait_for_timeout(1000 if selected else 400)
+        return bool(selected)
     except Exception:
-        pass
+        return False
+
+
+def comment_article_count(page: Page) -> int:
+    """Đếm comment/reply hiện đã được Facebook đưa vào DOM."""
+    try:
+        return int(page.evaluate(
+            """() => [...document.querySelectorAll('div[role="article"][aria-label]')]
+                .filter(el => /(?:bình luận|comment|trả lời|reply|repl)/i.test(
+                    el.getAttribute('aria-label') || '')).length"""
+        ) or 0)
+    except Exception:
+        return 0
+
+
+def scroll_comment_area(page: Page) -> bool:
+    """Cuộn tăng dần đúng container comment để không bỏ qua DOM virtualized."""
+    try:
+        result = page.evaluate(
+            """() => {
+                const scrollers = [...document.querySelectorAll('*')].filter(el => {
+                    const style = getComputedStyle(el);
+                    return /(auto|scroll)/i.test(style.overflowY)
+                        && el.scrollHeight > el.clientHeight + 20
+                        && el.querySelector('div[role="article"][aria-label]');
+                });
+                scrollers.sort((a, b) => a.clientHeight - b.clientHeight);
+                const scrollable = scrollers[0];
+                if (!scrollable) {
+                    const before = window.scrollY;
+                    window.scrollBy(0, Math.max(window.innerHeight * 0.75, 400));
+                    return { moved: window.scrollY > before };
+                }
+                const before = scrollable.scrollTop;
+                const step = Math.max(scrollable.clientHeight * 0.75, 450);
+                scrollable.scrollTop = Math.min(
+                    scrollable.scrollTop + step,
+                    scrollable.scrollHeight
+                );
+                return { moved: scrollable.scrollTop > before };
+            }"""
+        )
+        page.wait_for_timeout(1000)
+        return bool((result or {}).get("moved"))
+    except Exception:
+        return False
 
 
 def expand_all_comments(page: Page, max_clicks: int) -> int:
+    """Mở toàn bộ nút tải thêm comment/reply cho tới khi DOM không tăng nữa."""
     clicks = 0
-    for _ in range(max_clicks):
+    stagnant_rounds = 0
+    while clicks < max_clicks and stagnant_rounds < 8:
+        before = comment_article_count(page)
         try:
             clicked = page.evaluate(
                 """() => {
-                    const controls = document.querySelectorAll(
-                        'div[role="button"], span[role="button"], button'
-                    );
+                    const selector = [
+                        'button', '[role="button"]', '[role="menuitem"]',
+                        '[role="option"]'
+                    ].join(',');
+                    const controls = [...document.querySelectorAll(selector)];
+                    const textOf = el => [
+                        el.innerText || '', el.getAttribute('aria-label') || '',
+                        el.getAttribute('title') || ''
+                    ].join(' ').replace(/\\s+/g, ' ').trim();
                     for (const control of controls) {
-                        const text = (control.innerText || '').trim();
-                        const isMore = /(xem thêm|view more|previous|more)/i.test(text);
-                        const isComment = /(bình luận|comment|câu trả lời|repl)/i.test(text);
-                        if (isMore && isComment) {
+                        const text = textOf(control);
+                        const isMore = /(xem thêm|xem\\s+\\d+\\s+phản hồi|see more|view more|more|previous|earlier|trước đó|tải thêm)/i
+                            .test(text);
+                        const isComment = /(bình luận|comment|câu trả lời|trả lời|phản hồi|reply|repl)/i
+                            .test(text);
+                        const inComment = !!control.closest(
+                            'div[role="article"][aria-label*="comment" i],'
+                            + 'div[role="article"][aria-label*="bình luận" i],'
+                            + 'div[role="article"][aria-label*="reply" i],'
+                            + 'div[role="article"][aria-label*="trả lời" i]'
+                        );
+                        const rect = control.getBoundingClientRect();
+                        const inViewport = rect.bottom > 0
+                            && rect.right > 0
+                            && rect.top < window.innerHeight
+                            && rect.left < window.innerWidth;
+                        if (inViewport && isMore && (isComment || inComment)) {
+                            control.scrollIntoView({ block: 'center' });
                             control.click();
                             return true;
                         }
@@ -275,12 +377,22 @@ def expand_all_comments(page: Page, max_clicks: int) -> int:
                     return false;
                 }"""
             )
-            if not clicked:
-                break
-            clicks += 1
-            page.wait_for_timeout(500)
         except Exception:
-            break
+            clicked = False
+
+        if clicked:
+            clicks += 1
+            stagnant_rounds = 0
+            page.wait_for_timeout(700)
+            continue
+
+        moved = scroll_comment_area(page)
+        page.wait_for_timeout(500)
+        after = comment_article_count(page)
+        if moved or after > before:
+            stagnant_rounds = 0
+        else:
+            stagnant_rounds += 1
     return clicks
 
 
@@ -302,16 +414,14 @@ def reveal_comment_section(page: Page, post_url: str) -> None:
                         (el.getAttribute('aria-label') || '').trim()
                     ));
 
-                if (commentBox) {
+                const firstComment = [...scope.querySelectorAll(
+                    'div[role="article"][aria-label]'
+                )].find(el => /(?:bình luận|comment|trả lời|reply|repl)/i.test(
+                    el.getAttribute('aria-label') || ''));
+                if (firstComment) {
+                    firstComment.scrollIntoView({ block: 'start' });
+                } else if (commentBox) {
                     commentBox.scrollIntoView({ block: 'center' });
-                    let scrollable = commentBox.parentElement;
-                    for (let depth = 0; scrollable && depth < 15; depth++) {
-                        if (scrollable.scrollHeight > scrollable.clientHeight + 50) {
-                            scrollable.scrollTop = scrollable.scrollHeight;
-                            break;
-                        }
-                        scrollable = scrollable.parentElement;
-                    }
                 } else if (targetDialog) {
                     targetDialog.scrollTop = targetDialog.scrollHeight;
                 } else {
@@ -683,9 +793,9 @@ def extract_comment_rows(page: Page, post_url: str) -> list[dict]:
              const pageScope = targetDialog || document;
              const articles = [...pageScope.querySelectorAll(
                  'div[role="article"][aria-label]'
-             )].filter(el => /^(bình luận dưới tên|comment by)/i.test(
+             )].filter(el => /(?:bình luận|comment|trả lời|reply|repl)/i.test(
                  (el.getAttribute('aria-label') || '').trim()
-             ) && el.getClientRects().length > 0);
+             ));
             const timePattern = /^(vừa xong|just now|\d+\s*(giây|phút|giờ|ngày|tuần|tháng|năm|s|m|h|d|w|y))$/i;
 
             return articles.map(el => {
@@ -764,7 +874,7 @@ def crawl_thread(page: Page, post_url: str, max_expand_clicks: int) -> dict:
     page.wait_for_timeout(1800)
     expand_post_text(page)
     reveal_comment_section(page, post_url)
-    select_all_comments(page)
+    selected_all = select_all_comments(page)
     expand_clicks = expand_all_comments(page, max_expand_clicks)
     reveal_comment_section(page, post_url)
 
@@ -785,6 +895,10 @@ def crawl_thread(page: Page, post_url: str, max_expand_clicks: int) -> dict:
             }
         )
 
+    print(
+        f"      ↳ Bộ lọc comment: "
+        f"{'Tất cả bình luận' if selected_all else 'chưa xác nhận'}"
+    )
     print(
         f"      ↳ {len(replies)} reply, "
         f"{expand_clicks} lần mở thêm, post_id={source_post_id(post_url)}"

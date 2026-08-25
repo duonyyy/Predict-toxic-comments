@@ -1,0 +1,92 @@
+[
+  {
+    "row_id":"1",
+    "comment":"Cá nhân Th_ể thấy fan Sen Vàng bất lịch sự, nghèo lại còn vô duyên. Ykr ạ",
+    "toxicity":"TOXIC",
+    "expression_type":"EXPLICIT",
+    "evidence":"Công kích, hạ nhục nhóm người bằng những từ ngữ miệt thị cá nhân.",
+    "needs_review":false,
+    "review_reason":null
+  },
+  {
+    "row_id":"2",
+    "comment":"Fan vô văn hóa thật sự, nghèo còn md",
+    "toxicity":"TOXIC",
+    "expression_type":"EXPLICIT",
+    "evidence":"Sử dụng từ ngữ xúc phạm trực tiếp tới nhóm người (fan).",
+    "needs_review":false,
+    "review_reason":null
+  },
+  {
+    "row_id":"3",
+    "comment":"Nếu em không tute thì hãy nhận mức án tuhinh nha em, cảm ơn Pháp Luật VN đã lấy lại công bằng cho Bác gái",
+    "toxicity":"NON-TOXIC",
+    "expression_type":null,
+    "evidence":"Phản hồi về việc thực thi pháp luật, không có ngôn từ công kích cá nhân.",
+    "needs_review":false,
+    "review_reason":null
+  },
+  {
+    "row_id":"4",
+    "comment":"Á Hậu Cổ Mộ cỡ này. Á Hậu Du Ni Dớt cỡ nào chắc cỡ té trầy chân trật cái Lồng nên phải ở nhà chứ dập Mu Lone r lấy qq gì mà đòi đi vs ai. Nói chứ mãi yêu chị của e",
+    "toxicity":"TOXIC",
+    "expression_type":"EXPLICIT",
+    "evidence":"Sử dụng từ ngữ tục tĩu, thô thiển để công kích và chế giễu nhân vật.",
+    "needs_review":false,
+    "review_reason":null
+  },
+  {
+    "row_id":"6",
+    "comment":"Tính ra sâm tổ chức khoẻ ghê, nhốt thí sinh 1 tháng trong lachatâu, ko thiện nguyện, ko dự án gì hết, bán kết chung kết trong đó nốt, đúng chất: \"Ăn với ỉ.a tại chỗ\"",
+    "toxicity":"TOXIC",
+    "expression_type":"IMPLICIT",
+    "evidence":"Dùng hình ảnh so sánh thô thiển để chế giễu, hạ thấp cách tổ chức sự kiện.",
+    "needs_review":false,
+    "review_reason":null
+  },
+  {
+    "row_id":"7",
+    "comment":"Nhà khác mà cho ở trong khách sạn mãi kiểu đó là bị tế rồi:)",
+    "toxicity":"NON-TOXIC",
+    "expression_type":null,
+    "evidence":"Phê bình thái độ đối xử khác biệt, không công kích cá nhân.",
+    "needs_review":false,
+    "review_reason":null
+  },
+  {
+    "row_id":"8",
+    "comment":"Dì dượng là số 1. Mai sẽ thấy tuyệt tác sân khấu tại Paris nè",
+    "toxicity":"NON-TOXIC",
+    "expression_type":null,
+    "evidence":"Khen ngợi, tích cực.",
+    "needs_review":false,
+    "review_reason":null
+  },
+  {
+    "row_id":"9",
+    "comment":"Khách hàng đang ở trong ks nên cần khỏi cần đi đâu",
+    "toxicity":"NON-TOXIC",
+    "expression_type":null,
+    "evidence":"Thông tin trung tính.",
+    "needs_review":false,
+    "review_reason":null
+  },
+  {
+    "row_id":"10",
+    "comment":"Ăn, ỉa và bán áo zú",
+    "toxicity":"TOXIC",
+    "expression_type":"EXPLICIT",
+    "evidence":"Dùng từ thô tục hạ thấp, chế giễu đối tượng.",
+    "needs_review":false,
+    "review_reason":null
+  },
+  {
+    "row_id":"11",
+    "comment":"Chứ như ai ru rú ở trong cái khách sạn từ hoạt động đến các phần thi, sk thì trên bãi đậu xe của khách sạn. Cái đài phun nước kbt có giựt kh, chứ nhà ai kia bị cúp điện, khán giả bỏ dề kia kìa. Cái nhà kể ra cũng thúi rùm mà thích moi của nhà khác quá ha",
+    "toxicity":"TOXIC",
+    "expression_type":"IMPLICIT",
+    "evidence":"Mỉa mai, công kích hạ thấp đối thủ bằng ngôn từ hạ nhục.",
+    "needs_review":false,
+    "review_reason":null
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "name": "facebook_group",
+      "platform": "facebook",
+      "adapter": "facebook_group_json",
+      "path": "facebook/facebook_group/data.json"
+    },
+    {
+      "name": "facebook_page",
+      "platform": "facebook",
+      "adapter": "facebook_page_json",
+      "path": "facebook/facebook_page/data.json"
+    },
+    {
+      "name": "facebook_single_post",
+      "platform": "facebook",
+      "adapter": "facebook_single_json",
+      "path": "facebook/facebook_single_post/data.json"
+    },
+    {
+      "name": "thread_city",
+      "platform": "threads",
+      "adapter": "thread_city_csv",
+      "path": "thread_city/thread_city.csv"
+    },
+    {
+      "name": "tiktok",
+      "platform": "tiktok",
+      "adapter": "tiktok_csv",
+      "path": "tiktok/tiktok_comments.csv"
+    },
+    {
+      "name": "voz",
+      "platform": "voz",
+      "adapter": "voz_csv",
+      "path": "voz/voz_comments.csv"
+    },
+    {
+      "name": "youtube_keywords",
+      "platform": "youtube",
+      "adapter": "youtube_keywords_csv",
+      "path": "youtube/youtube_comments_keywords.csv"
+    },
+    {
+      "name": "youtube_links",
+      "platform": "youtube",
+      "adapter": "youtube_links_csv",
+      "path": "youtube/youtube_links/youtube_comments_link.csv"
+    }
+  ]
+}

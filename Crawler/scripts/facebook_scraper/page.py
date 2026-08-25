@@ -15,6 +15,7 @@ from pathlib import Path
 from urllib.parse import urlencode, urlsplit, urlunsplit
 
 from playwright.sync_api import (
+    Error as PlaywrightError,
     Page,
     TimeoutError as PlaywrightTimeoutError,
     sync_playwright,
@@ -22,7 +23,7 @@ from playwright.sync_api import (
 
 import group as group_scraper
 
-
+# 350
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_PAGE_URL = "https://www.facebook.com/tintucvtv24"
 #  https://www.facebook.com/hoinguoithucdungvietnam
@@ -200,10 +201,23 @@ def scroll_feed(page: Page) -> None:
             )
             page.wait_for_timeout(random.randint(2200, 3400))
             return
-        except Exception:
+        except PlaywrightError as error:
+            if is_target_closed_error(error):
+                raise RuntimeError(
+                    "Chrome/CDP đã đóng trong lúc crawl; dữ liệu đã lưu trước đó được giữ nguyên."
+                ) from error
             if attempt == 2:
                 raise
             page.wait_for_timeout(1000)
+
+
+def is_target_closed_error(error: BaseException) -> bool:
+    message = str(error).lower()
+    return (
+        "target page, context or browser has been closed" in message
+        or "target closed" in message
+        or "browser has been closed" in message
+    )
 
 
 def patch_shared_post_id_parser() -> None:
@@ -211,16 +225,24 @@ def patch_shared_post_id_parser() -> None:
     group_scraper.POST_LINK_RE = POST_ID_RE
 
 
-def comments_are_structured(record: dict) -> bool:
+def comments_are_structured(
+    record: dict,
+    allow_missing_metadata: bool = False,
+) -> bool:
     comments = record.get("comments")
     return isinstance(comments, list) and all(
         isinstance(comment, dict)
         and isinstance(comment.get("post_id"), str)
-        and isinstance(comment.get("username"), str)
-        and bool(comment["username"].strip())
-        and isinstance(comment.get("datetime"), str)
-        and bool(comment["datetime"].strip())
         and isinstance(comment.get("comment"), str)
+        and (
+            allow_missing_metadata
+            or (
+                isinstance(comment.get("username"), str)
+                and bool(comment["username"].strip())
+                and isinstance(comment.get("datetime"), str)
+                and bool(comment["datetime"].strip())
+            )
+        )
         for comment in comments
     )
 
@@ -266,6 +288,17 @@ def merge_record(existing: dict, incoming: dict) -> None:
     existing["comments"] = incoming["comments"]
 
 
+def close_page_safely(page: Page | None) -> None:
+    if page is None:
+        return
+    try:
+        page.close()
+    except BaseException:
+        # Khi Ctrl+C xảy ra trong Playwright, cleanup không được che mất
+        # thông báo dừng và các record đã lưu trước đó.
+        pass
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Crawl Facebook Page posts và comments, không tải ảnh."
@@ -281,6 +314,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cdp-url", default="http://localhost:9222")
     parser.add_argument("--max-expand-clicks", type=int, default=40)
     parser.add_argument("--max-idle-rounds", type=int, default=15)
+    parser.add_argument(
+        "--allow-missing-metadata",
+        action="store_true",
+        help="Giữ comment dù Facebook thiếu username hoặc datetime.",
+    )
     parser.add_argument("--delay-min", type=float, default=1.0)
     parser.add_argument("--delay-max", type=float, default=2.0)
     parser.add_argument(
@@ -320,7 +358,7 @@ def main() -> int:
         if not canonical:
             continue
         records_by_url[canonical] = record
-        if comments_are_structured(record):
+        if comments_are_structured(record, args.allow_missing_metadata):
             known_urls.add(canonical)
         else:
             refresh_urls.add(canonical)
@@ -388,8 +426,22 @@ def main() -> int:
                             args.max_expand_clicks,
                         )
                     except (PlaywrightTimeoutError, RuntimeError, ValueError) as error:
+                        if is_target_closed_error(error):
+                            raise RuntimeError(
+                                "Chrome/CDP đã đóng trong lúc crawl; "
+                                "dữ liệu đã lưu trước đó được giữ nguyên."
+                            ) from error
                         failed_attempts[post_url] = failed_attempts.get(post_url, 0) + 1
                         print(f"⚠️ Bỏ qua tạm {post_url}: {error}")
+                        continue
+                    except PlaywrightError as error:
+                        if is_target_closed_error(error):
+                            raise RuntimeError(
+                                "Chrome/CDP đã đóng trong lúc crawl; "
+                                "dữ liệu đã lưu trước đó được giữ nguyên."
+                            ) from error
+                        failed_attempts[post_url] = failed_attempts.get(post_url, 0) + 1
+                        print(f"⚠️ Lỗi Playwright tại {post_url}: {error}")
                         continue
                     except Exception as error:
                         failed_attempts[post_url] = failed_attempts.get(post_url, 0) + 1
@@ -401,9 +453,15 @@ def main() -> int:
                     existing = records_by_url.get(post_url)
                     if existing is None:
                         text_match = records_by_text.get(text_key)
-                        if text_match is not None and not comments_are_structured(text_match):
+                        if text_match is not None and not comments_are_structured(
+                            text_match,
+                            args.allow_missing_metadata,
+                        ):
                             existing = text_match
-                    if incoming["comments"] and not comments_are_structured(incoming):
+                    if incoming["comments"] and not comments_are_structured(
+                        incoming,
+                        args.allow_missing_metadata,
+                    ):
                         failed_attempts[post_url] = failed_attempts.get(post_url, 0) + 1
                         print(
                             "⚠️ Comment chưa đủ username/datetime; "
@@ -465,9 +523,9 @@ def main() -> int:
 
                 scroll_feed(feed_page)
         finally:
-            detail_page.close()
+            close_page_safely(detail_page)
             if owns_feed_page:
-                feed_page.close()
+                close_page_safely(feed_page)
 
     if records and (crawled_any or not args.reset):
         save_records_safely(output, records)
@@ -489,4 +547,14 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except KeyboardInterrupt:
+        print(
+            "\nĐã dừng bằng Ctrl+C. Các bài đã crawl thành công trước đó "
+            "đã được lưu; bài đang crawl dở sẽ được thử lại ở lần chạy sau."
+        )
+        raise SystemExit(130)
+    except RuntimeError as error:
+        print(f"❌ {error}")
+        raise SystemExit(1)

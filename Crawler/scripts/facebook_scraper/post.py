@@ -321,11 +321,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("post_url", help="Permalink của một bài Facebook.")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--cdp-url", default="http://localhost:9222")
-    parser.add_argument("--max-expand-clicks", type=int, default=40)
+    parser.add_argument("--max-expand-clicks", type=int, default=500)
     parser.add_argument(
         "--allow-missing-metadata",
         action="store_true",
         help="Cho phép ghi dù Facebook không cung cấp username/datetime.",
+    )
+    parser.add_argument(
+        "--replace-existing",
+        action="store_true",
+        help="Crawl lại và thay bài đã có cùng post_id trong output.",
     )
     return parser.parse_args()
 
@@ -348,7 +353,8 @@ def main() -> int:
             source_type, post_url = resolve_post_url(detail_page, supplied_url)
             print(f"Loại nguồn: Facebook {source_type.title()}")
             print(f"Permalink: {post_url}")
-            if find_existing_post(posts, post_url):
+            existing = find_existing_post(posts, post_url)
+            if existing and not args.replace_existing:
                 if needs_migration:
                     save_json_safely(output, posts)
                 print(f"Đã tồn tại trong output, bỏ qua: {post_url}")
@@ -365,11 +371,16 @@ def main() -> int:
         finally:
             detail_page.close()
 
-    posts.append(thread)
+    if existing:
+        posts[posts.index(existing)] = thread
+        action = "Cập nhật"
+    else:
+        posts.append(thread)
+        action = "Đã thêm"
     save_json_safely(output, posts)
     print(f"Output: {output}")
     print(
-        f"Đã thêm 1 bài với "
+        f"{action} 1 bài với "
         f"{max(len(thread.get('comments', [])) - 1, 0)} comment. "
         f"Tổng trong file: {len(posts)} bài."
     )

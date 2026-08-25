@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.test-tmp/
+
+# Dữ liệu thô và các output lớn không đưa vào Git.
+# Giữ lại các file .gitkeep để cấu trúc data/ được tái tạo khi clone project.
+data/**
+!data/**/
+!data/**/.gitkeep

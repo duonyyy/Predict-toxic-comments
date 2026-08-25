@@ -1,0 +1,118 @@
+# ==============================================================================
+# 1. Thư mục đọc & Báo cáo nội bộ (Local Docs & Reports)
+# ==============================================================================
+Docs_Tong_Hop/
+BAOCAO/
+
+# ==============================================================================
+# 2. Dữ liệu Thô, Trung Gian & Trọng Số (Không đưa Data thô & Weights lên GitHub)
+# ==============================================================================
+# Bỏ qua toàn bộ dữ liệu cào thô, trung gian và kiểm toán (giữ lại Dataset/ sạch)
+**/data/**
+!**/data/**/
+!**/data/**/.gitkeep
+!**/data/**/README.md
+
+# Bỏ qua các tập dữ liệu huấn luyện & phân chia tập train/dev/test
+Model/data/
+Model/data_splits/
+Model/results/
+Model/artifacts/
+!Model/artifacts/**/.gitkeep
+
+# Bỏ qua dữ liệu gán nhãn thô và kết quả chi tiết
+Annotation/gamusaVOZ-HSD-Hate-Comments/
+Annotation/outputs/
+Annotation/templates/*.csv
+Annotation/data/
+
+# Bỏ qua trọng số mô hình lớn (Model Weights & Checkpoints)
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+
+# Bỏ qua các định dạng tệp dữ liệu lớn
+*.parquet
+*.jsonl
+*.feather
+*.sqlite
+*.db
+
+# ==============================================================================
+# 3. Môi trường & Khóa bảo mật (Security & Secrets)
+# ==============================================================================
+.env
+*.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.token
+
+# ==============================================================================
+# 4. Python Cache & Build Artifacts
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.test-tmp/
+
+# ==============================================================================
+# 5. Virtual Environments
+# ==============================================================================
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ==============================================================================
+# 6. Jupyter Notebook Checkpoints
+# ==============================================================================
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# ==============================================================================
+# 7. IDE & System Files
+# ==============================================================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.bak
+*.tmp
+*.swp
+*~
+
+# ==============================================================================
+# 8. Node / Web Frontend
+# ==============================================================================
+node_modules/
+.next/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

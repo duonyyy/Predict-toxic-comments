@@ -18,9 +18,12 @@ voz_crawler/
 ├── scripts/                      # các workflow có thể chạy trực tiếp
 │   ├── youtube/
 │   │   ├── crawl_youtube.py
+│   │   ├── crawl_youtube_live_chat.py # chat trực tiếp của một livestream
 │   │   └── youtube_comments_crawler.py # toàn bộ comment của danh sách URL
 │   ├── tiktok/
 │   │   ├── crawl_tiktok_apify.py     # cách TikTok được khuyến nghị trong dự án
+│   │   ├── crawl_tiktok_live.py      # comment đang phát sinh từ TikTok LIVE
+│   │   ├── crawl_tiktok_post.py      # toàn bộ comment từ một permalink TikTok
 │   │   └── crawl_tiktok.py           # TikTokApi thử nghiệm, dễ bị chặn
 │   ├── reddit/
 │   │   └── crawl_reddit.py
@@ -154,6 +157,44 @@ Dùng `--no-replies` nếu chỉ cần bình luận cấp cao nhất. Luồng da
 không lọc
 ngôn ngữ vì mục tiêu là lấy toàn bộ comment có thể truy cập.
 
+### Crawl chat trực tiếp từ một livestream
+
+`crawl_youtube_live_chat.py` nhận link livestream hoặc video ID, lấy
+`activeLiveChatId` rồi poll live chat theo khoảng thời gian YouTube trả về.
+Chat được ghi ngay sau mỗi poll vào
+`data/youtube/youtube_comments_keywords.csv`, dùng `comment_id` của message để
+không thêm trùng:
+
+```powershell
+python -u -X utf8 scripts/youtube/crawl_youtube_live_chat.py `
+  "LINK_LIVESTREAM_YOUTUBE"
+```
+
+Mặc định script chạy đến khi live kết thúc hoặc người dùng nhấn `Ctrl+C`. Có thể
+giới hạn thời gian hoặc số message mới:
+
+```powershell
+python -u -X utf8 scripts/youtube/crawl_youtube_live_chat.py `
+  "LINK_LIVESTREAM_YOUTUBE" `
+  --duration-minutes 60 `
+  --max-messages 5000
+```
+
+Kiểm tra link mà không gọi API:
+
+```powershell
+python -u -X utf8 scripts/youtube/crawl_youtube_live_chat.py `
+  "LINK_LIVESTREAM_YOUTUBE" `
+  --dry-run
+```
+
+Script lấy mọi ngôn ngữ và lưu message chat, Super Chat hoặc nội dung sự kiện
+có text hiển thị. Dùng `--include-events` nếu muốn lưu cả sự kiện hệ thống
+không có text. API chỉ trả một phần lịch sử gần nhất trong request đầu và không
+lấy lại được các message cũ hơn phần đó; hãy khởi động script khi live đang
+phát. Khi livestream kết thúc, `activeLiveChatId` bị gỡ nên luồng này không
+crawl được chat replay.
+
 ## TikTok
 
 ### Cách khuyến nghị: Apify
@@ -186,6 +227,77 @@ Nếu Actor tìm thấy video nhưng thêm `0` bình luận, đọc phần thố
 
 `--search-suffix "Viet Nam"` chỉ giúp hướng kết quả về ngữ cảnh Việt Nam, không
 đảm bảo mọi video hoặc bình luận là tiếng Việt.
+
+### Toàn bộ comment từ một bài TikTok cụ thể
+
+`crawl_tiktok_post.py` nhận một permalink TikTok, chạy Comments Actor bất đồng
+bộ và ghi nối tiếp vào `data/tiktok/tiktok_comments.csv`. Script lấy mọi ngôn
+ngữ, lưu cả comment cấp cao nhất và replies, đồng thời bỏ `comment_id` đã có:
+
+```powershell
+python -u -X utf8 scripts/tiktok/crawl_tiktok_post.py `
+  "LINK_BAI_TIKTOK"
+```
+
+Mặc định script yêu cầu tối đa 100.000 comment/reply và tối đa 1.000 reply cho
+mỗi comment. Đây là giới hạn an toàn của yêu cầu, không phải cam kết lấy đủ:
+TikTok và Actor có thể trả ít hơn, đặc biệt với bài có hàng nghìn comment.
+Actor tính phí theo dữ liệu thu thập; nên kiểm tra trước bằng:
+
+```powershell
+python -u -X utf8 scripts/tiktok/crawl_tiktok_post.py `
+  "LINK_BAI_TIKTOK" `
+  --max-comments 500 `
+  --max-replies-per-comment 100 `
+  --dry-run
+```
+
+Script in `run_id` ngay sau khi tạo Actor. Nếu terminal bị dừng hoặc mất mạng,
+không chạy lại URL vì có thể tạo thêm Actor và phát sinh phí. Dùng chính run cũ:
+
+```powershell
+python -u -X utf8 scripts/tiktok/crawl_tiktok_post.py `
+  --run-id "APIFY_RUN_ID"
+```
+
+Kết quả được tải theo trang và ghi sau từng trang, nên chạy lại cùng `run_id`
+hoặc cùng URL sẽ không thêm trùng các `comment_id` đã lưu.
+
+### Comment trực tiếp từ TikTok LIVE
+
+`crawl_tiktok_live.py` dùng thư viện TikTokLive để nghe comment mới trong lúc
+LIVE đang phát. Có thể truyền username hoặc link LIVE:
+
+```powershell
+python -u -X utf8 scripts/tiktok/crawl_tiktok_live.py `
+  "https://www.tiktok.com/@USERNAME/live"
+```
+
+Hoặc:
+
+```powershell
+python -u -X utf8 scripts/tiktok/crawl_tiktok_live.py "@USERNAME"
+```
+
+Giới hạn số comment hoặc thời gian chạy:
+
+```powershell
+python -u -X utf8 scripts/tiktok/crawl_tiktok_live.py "@USERNAME" `
+  --max-comments 500 `
+  --duration-minutes 60
+```
+
+Mặc định `--max-comments 0` và `--duration-minutes 0`, nghĩa là chạy đến khi
+LIVE kết thúc hoặc nhấn `Ctrl+C`. Mỗi comment được ghi ngay và nối tiếp vào
+`data/tiktok/tiktok_comments.csv`; dữ liệu cũ không bị ghi đè. Script chỉ thu
+comment xuất hiện sau lúc kết nối, không lấy lịch sử trước đó. TikTokLive là thư
+viện không chính thức nên kết nối có thể hỏng khi TikTok thay đổi giao thức.
+
+Kiểm tra username/link mà không kết nối:
+
+```powershell
+python -u -X utf8 scripts/tiktok/crawl_tiktok_live.py "@USERNAME" --dry-run
+```
 
 ### Cách thử nghiệm: TikTokApi
 
@@ -345,6 +457,23 @@ python -u -X utf8 scripts/facebook_scraper/page.py `
   --target 50
 ```
 
+Mặc định mỗi bài được mở tối đa `40` lần nút tải thêm. Đây là số lần mở,
+không phải số comment; mỗi lần có thể tải nhiều comment/reply. Nếu muốn crawl
+comment/reply nhiều hơn, tăng giới hạn và cho phép giữ comment thiếu metadata:
+
+```powershell
+python -u -X utf8 scripts/facebook_scraper/page.py `
+  --page-url "https://www.facebook.com/hoinguoithucdungvietnam" `
+  --target 50 `
+  --max-expand-clicks 500 `
+  --allow-missing-metadata
+```
+
+`--allow-missing-metadata` giữ nội dung comment với `username` hoặc `datetime`
+là `null` khi Facebook không cung cấp trường đó. Nếu nhấn `Ctrl+C`, các bài đã
+ghi thành công trước đó vẫn được lưu; bài đang crawl dở sẽ được thử lại ở lần
+chạy sau.
+
 `--target` là tổng số bài cần có trong file, không phải số bài bổ sung. Những
 lần chạy sau script đọc dữ liệu hiện có, bỏ qua URL đã crawl và ghi nối tiếp
 sau từng bài. Script duy trì `data.json.bak`; không dùng `--reset` nếu muốn
@@ -398,6 +527,29 @@ python -u -X utf8 scripts/facebook_scraper/post.py `
   --output "data/facebook/facebook_single_post/data.json"
 ```
 
+Luồng Facebook cố gắng lấy toàn bộ comment và reply mà tài khoản hiện tại có
+quyền xem. Script tự chọn `Tất cả bình luận`, mở các nút dạng `Xem N phản hồi`
+và cuộn đúng container comment của Facebook để xử lý danh sách virtualized.
+`--max-expand-clicks` là giới hạn an toàn số lần mở; mặc định là `500`:
+
+```powershell
+python -u -X utf8 scripts/facebook_scraper/post.py `
+  "LINK_BÀI_VIẾT_FACEBOOK" `
+  --output "data/facebook/facebook_single_post/data.json" `
+  --max-expand-clicks 500
+```
+
+Facebook đôi khi không cung cấp username hoặc datetime cho một reply. Nếu vẫn
+muốn giữ nội dung comment đó, cho phép metadata thiếu:
+
+```powershell
+python -u -X utf8 scripts/facebook_scraper/post.py `
+  "LINK_BÀI_VIẾT_FACEBOOK" `
+  --output "data/facebook/facebook_single_post/data.json" `
+  --max-expand-clicks 500 `
+  --allow-missing-metadata
+```
+
 Output là một JSON array. Mỗi phần tử có đúng schema VOZ của một bài:
 
 ```json
@@ -420,15 +572,36 @@ Output là một JSON array. Mỗi phần tử có đúng schema VOZ của một
 ]
 ```
 
-Phần tử đầu tiên của `comments` là bài gốc; các phần tử tiếp theo là bình luận,
-vì vậy `total_comments` tính cả bài gốc giống schema VOZ mẫu. Mặc định script
-không ghi output nếu có username/datetime bị thiếu. Có thể dùng
-`--allow-missing-metadata` nếu chấp nhận `null`.
+Phần tử đầu tiên của `comments` là bài gốc; các phần tử tiếp theo là bình luận
+hoặc reply, vì vậy `total_comments` tính cả bài gốc giống schema VOZ mẫu. Dòng
+log `reply` chỉ tính các phần tử sau bài gốc; số phần tử trong mảng `comments`
+sẽ lớn hơn số đó một đơn vị.
+
+Mặc định script không ghi output nếu có username/datetime bị thiếu. Dùng
+`--allow-missing-metadata` để giữ các dòng đó với giá trị `null` thay vì hủy
+toàn bộ bài.
 
 Mỗi lần chạy, bài mới được thêm cuối array và toàn bộ bài cũ được giữ nguyên.
-URL đã tồn tại sẽ bị bỏ qua, không thêm trùng và không ghi đè. Nếu output cũ
-đang là một object đơn, script tự chuyển thành array ở lần chạy tiếp theo.
-Mỗi lần ghi thành công vẫn tạo `data.json.bak` để dự phòng.
+URL đã tồn tại sẽ bị bỏ qua, không thêm trùng và không ghi đè. Muốn crawl lại
+một URL đã có, dùng `--replace-existing`; tùy chọn này thay record cũ bằng
+record mới:
+
+```powershell
+python -u -X utf8 scripts/facebook_scraper/post.py `
+  "LINK_BÀI_VIẾT_FACEBOOK" `
+  --output "data/facebook/facebook_single_post/data.json" `
+  --max-expand-clicks 500 `
+  --allow-missing-metadata `
+  --replace-existing
+```
+
+Nếu output cũ đang là một object đơn, script tự chuyển thành array ở lần chạy
+tiếp theo. Mỗi lần ghi thành công vẫn tạo `data.json.bak` để dự phòng.
+
+Nếu log vẫn ghi `0 lần mở thêm`, kiểm tra Chrome đã đăng nhập đúng tài khoản
+và thử chạy lại với `--replace-existing`. Facebook có thể vẫn giới hạn kết quả
+do quyền xem, bài riêng tư, comment bị ẩn hoặc thay đổi giao diện; crawler
+không thể lấy những comment mà phiên đăng nhập không được Facebook cung cấp.
 
 ## VOZ
 
@@ -492,6 +665,7 @@ VOZ requests vẫn giữ schema lịch sử riêng để tương thích với d�
 python -m compileall -q src scripts
 python scripts/youtube/crawl_youtube.py --help
 python scripts/tiktok/crawl_tiktok_apify.py --help
+python scripts/tiktok/crawl_tiktok_live.py --help
 python scripts/reddit/crawl_reddit.py --help
 ```
 

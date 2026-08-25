@@ -1,0 +1,10 @@
+{
+  "min_comment_words": 2,
+  "max_comment_words": 200,
+  "english_confidence_threshold": 0.95,
+  "semantic_similarity_threshold": 0.95,
+  "semantic_top_k_neighbors": 10,
+  "semantic_model": "bkai-foundation-models/vietnamese-bi-encoder",
+  "apply_semantic_removal": false,
+  "random_seed": 42
+}

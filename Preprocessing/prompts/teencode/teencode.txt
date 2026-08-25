@@ -1,0 +1,588 @@
+ctrai	con trai
+khôg	không
+bme	bố mẹ
+cta	chúng ta
+mih	mình
+mqh	mối quan hệ
+cgai	con gái
+nhữg	những
+mng	mọi người
+svtn	sinh viên tình nguyện
+r	rồi
+qtam	quan tâm
+thươg	thương
+qtâm	quan tâm
+chug	chung
+trườg	trường
+thoy	thôi
+đki	đăng ký
+atsm	ảo tưởng sức mạnh
+ạk	ạ
+cv	công việc / hồ sơ xin việc (CV)
+vch	vãi chưởng
+cùg	cùng
+pn	bạn
+pjt	biết
+thjk	thích
+keke	cười khẽ / kê kê
+del	đéo
+dell	đéo
+ktra	kiểm tra
+nek	nè
+cgái	con gái
+nthe	như thế
+chúg	chúng
+kái	cái
+tìh	tình
+phòg	phòng
+lòg	lòng
+từg	từng
+rằg	rằng
+sốg	sống
+thuj	thôi
+thuơng	thương
+càg	càng
+đky	đăng ký
+bằg	bằng
+sviên	sinh viên
+ák	á
+đág	đáng
+nvay	như vậy
+nhjeu	nhiều
+xg	xuống
+zồi	rồi
+trag	trang
+zữ	dữ
+atrai	anh trai
+kte	kinh tế
+độg	động
+lmht	Liên Minh Huyền Thoại
+gắg	gắng
+đzai	đẹp trai
+thgian	thời gian
+plz	làm ơn (please)
+đồg	đồng
+btrai	bạn trai
+nthê	như thế
+hìhì	hì hì
+vọg	vọng
+hihe	hi he
+đôg	đông
+răg	răng
+thườg	thường
+tcảm	tình cảm
+đứg	đứng
+ksao	không sao
+dz	đẹp trai
+hjxhjx	hix hix
+cmày	chúng mày
+xuốg	xuống
+nkư	như
+lquan	liên quan
+tiếg	tiếng
+hajz	haiz (tiếng thở dài)
+xih	xinh
+hìh	hình
+thàh	thành
+ngke	nghe
+dzậy	vậy
+teencode	ngôn ngữ/mã viết kiểu teen
+tnào	thế nào
+tưởg	tưởng
+ctrinh	chương trình
+phog	phong
+hôg	không
+zìa	về
+kũg	cũng
+ntnao	như thế nào
+trọg	trọng
+nthế	như thế
+năg	năng
+ngđó	người đó
+lquen	làm quen
+riêg	riêng
+ngag	ngang
+hêhê	hê hê
+bnhiu	bao nhiêu
+ngốk	ngốc
+kậu	cậu
+highland	Highlands (Coffee)
+kqua	kết quả
+htrc	hôm trước
+địh	định
+gđình	gia đình
+giốg	giống
+csống	cuộc sống
+xug	xung (cần ngữ cảnh)
+zùi	rồi
+bnhiêu	bao nhiêu
+cbị	chuẩn bị
+kòn	còn
+buôg	buông
+csong	cuộc sống
+chàg	chàng
+chăg	chăng
+ngàh	ngành
+llac	liên lạc
+nkưng	nhưng
+nắg	nắng
+tíh	tính
+khoảg	khoảng
+thík	thích
+ngđo	người đó
+ngkhác	người khác
+thẳg	thẳng
+kảm	cảm
+dàh	dành
+júp	giúp
+lặg	lặng
+vđê	vấn đề
+bbè	bạn bè
+bóg	bóng
+dky	đăng ký
+dòg	dòng
+uốg	uống
+tyêu	tình yêu
+snvv	sinh nhật vui vẻ
+đthoại	điện thoại
+qhe	quan hệ
+cviec	công việc
+tượg	tượng
+qà	quà
+thjc	thích
+nhưq	nhưng
+cđời	cuộc đời
+bthường	bình thường
+zà	già
+đáh	đánh
+xloi	xin lỗi
+zám	dám
+qtrọng	quan trọng
+bìh	bình
+lzi	làm gì
+qhệ	quan hệ
+đhbkhn	Đại học Bách khoa Hà Nội
+hajzz	haiz (tiếng thở dài)
+kủa	của
+lz	làm gì
+đhkhtn	Đại học Khoa học Tự nhiên
+đóg	đóng
+cka	cha
+lgi	làm gì
+nvậy	như vậy
+qả	quả
+đkiện	điều kiện
+nèk	nè
+tlai	tương lai
+bsĩ	bác sĩ
+hkì	học kỳ
+đcsvn	Đảng Cộng sản Việt Nam
+vde	vấn đề
+chta	chúng ta
+òy	rồi
+ltinh	linh tinh
+ngyeu	người yêu
+đthoai	điện thoại
+snghĩ	suy nghĩ
+nặg	nặng
+họk	học
+dừg	dừng
+hphúc	hạnh phúc
+hiha	hi ha
+wtâm	quan tâm
+thíck	thích
+chuện	chuyện
+lạh	lạnh
+fây	Facebook
+ntnày	như thế này
+lúk	lúc
+haj	haiz (tiếng thở dài)
+ngía	nghía
+mớj	mới
+hsơ	hồ sơ
+ctraj	con trai
+nyêu	người yêu
+điiiiiii	đi
+rồii	rồi
+c	chị
+kih	kinh
+kb	kết bạn / không biết (tùy ngữ cảnh)
+hixxx	hix (tiếng khóc/thở dài)
+dthương	dễ thương
+nhiềuuu	nhiều
+ctrình	chương trình
+mìnk	mình
+mjh	mình
+ng	người
+vc	vợ chồng / vãi chưởng (tùy ngữ cảnh)
+uhm	ừm
+thỳ	thì
+nyc	người yêu cũ
+tks	cảm ơn (thanks)
+nàg	nàng
+scđ	sao cũng được
+thôii	thôi
+đjên	điên
+bgái	bạn gái
+vớii	với
+xink	xinh
+hđộng	hành động
+đhọc	đại học
+mk	mình
+bn	bạn
+thik	thích
+cj	chị
+mn	mọi người
+nguoi	người
+nógn	nóng
+hok	không
+ko	không
+bik	biết
+vs	với
+cx	cũng
+mik	mình
+wtf	cái quái gì / what the fuck (tục)
+đc	được
+cmt	bình luận (comment)
+ck	chồng / chuyển khoản (tùy ngữ cảnh)
+chk	chồng
+ngta	người ta
+mem	thành viên (member)
+gđ	gia đình
+oh	ồ
+vk	vợ
+ctác	công tác
+sg	Sài Gòn
+ae	anh em
+ah	à
+ạh	ạ
+rì	gì
+ms	mới
+vn	Việt Nam
+nhaa	nha
+cũg	cũng
+đag	đang
+ơiii	ơi
+hic	hic (tiếng nấc/khóc)
+ace	anh chị em
+àk	à
+uh	ừ
+cmm	con mẹ mày
+cmnr	con mẹ nó rồi
+ơiiii	ơi
+hnay	hôm nay
+ukm	ừm
+tq	Trung Quốc
+ctr	chương trình
+đii	đi
+nch	nói chuyện
+trieu	triệu
+hahah	ha ha
+nta	người ta
+ngèo	nghèo
+kêh	kênh
+cđm	cộng đồng mạng / “cái địt mẹ” (tục, tùy ngữ cảnh)
+cị	chị
+ak	à
+clgv	cái lồn gì vậy
+full	đầy đủ / hết chỗ (tùy ngữ cảnh)
+ad	quản trị viên (admin)
+j	gì
+ny	người yêu
+dc	được
+qc	quảng cáo
+baoh	bao giờ
+zui	vui
+zẻ	vẻ
+tym	tim
+aye	anh yêu em
+eya	em yêu anh
+fb	Facebook
+insta	Instagram
+omg	ôi trời / oh my God
+cocc	con ông cháu cha
+z	vậy
+thich	thích
+add	thêm / kết bạn (tùy ngữ cảnh)
+vcl	vãi cả lồn (câu cảm thán rất tục)
+đt	điện thoại
+acc	tài khoản (account)
+lol	cười lớn (LOL) / Liên Minh Huyền Thoại / từ tục chỉ bộ phận sinh dục (tùy ngữ cảnh)
+loz	lồn (tục, viết né kiểm duyệt)
+lozz	lồn (tục, viết né kiểm duyệt)
+trc	trước
+chs	chẳng hiểu sao
+đhs	đéo hiểu sao
+qá	quá
+ntn	như thế nào
+wá	quá
+zậy	vậy
+zô	vô
+ytb	YouTube
+vđ	vấn đề / vãi đái (tùy ngữ cảnh)
+vchg	vãi chưởng
+sml	sấp mặt lồn (tục) / rất thảm
+xl	xin lỗi
+cmn	con mẹ nó
+face	Facebook
+hjhj	hi hi
+vv	vui vẻ / vân vân (tùy ngữ cảnh)
+ns	nói
+iu	yêu
+vcđ	vãi cả đái (tục)
+in4	thông tin (info)
+qq	quần què
+sub	đăng ký theo dõi (subscribe)
+kh	không / khách hàng (tùy ngữ cảnh)
+zạ	dạ
+oy	rồi
+jo	giờ
+clmm	cái lồn mẹ mày
+bsvv	buổi sáng vui vẻ
+troai	trai
+wa	quá
+hjx	hix
+e	em
+ik	đi
+ji	gì
+ce	chị em
+lm	làm
+đz	đẹp trai / đẹp
+sr	xin lỗi (sorry)
+ib	nhắn riêng (inbox)
+hoy	thôi
+đbh	đéo bao giờ
+k	không
+vd	ví dụ
+a	anh
+cũng z	cũng vậy
+z là	vậy là
+unf	hủy kết bạn (unfriend)
+my fen	bạn tôi (my friend)
+fen	bạn (friend)
+cty	công ty
+on lai	trực tuyến (online)
+u hai ba	U23
+kô	không
+đtqg	đội tuyển quốc gia
+hqua	hôm qua
+xog	xong
+uk	ừ
+nhoé	nhé
+biet	biết
+quí	quý
+stk	số tài khoản
+hong kong	Hồng Kông
+đươc	được
+nghành	ngành
+nvqs	nghĩa vụ quân sự
+ngừoi	người
+trog	trong
+tgian	thời gian
+biêt	biết
+fải	phải
+nguời	người
+tđn	thế đéo nào
+bth	bình thường
+tgdd	Thế Giới Di Động
+khg	không
+nhưg	nhưng
+thpt	trung học phổ thông
+thằg	thằng
+đuợc	được
+àh	à
+ku	cu; cậu bé / từ chỉ bộ phận sinh dục (tùy ngữ cảnh)
+thým	thím
+onl	trực tuyến (online)
+zú	vú
+cmnd	chứng minh nhân dân (giấy tờ cũ)
+sđt	số điện thoại
+klq	không liên quan
+éo	đéo
+hăm	không (cách nói đùa/địa phương, hiếm)
+đíu	đéo
+lôl	lồn (tục, viết né kiểm duyệt)
+kặc	cặc (tục, viết né kiểm duyệt)
+vl	vãi lồn (tục) / vô lý (tùy ngữ cảnh)
+đm	địt mẹ
+cmnl	con mẹ nó luôn
+đmm	địt mẹ mày
+cl	cái lồn (tục)
+trầm zn	trầm cảm
+khum	không
+hong	không
+dui	vui
+xiền	tiền
+yk	ý / ý kiến (tùy ngữ cảnh)
+hoi	thôi
+thoi	thôi
+mợt	mệt
+hẻ	hả
+mạ	mẹ
+má	mẹ
+òi	rồi
+đg	đang
+cc	con cặc (tục)
+ex	người yêu cũ
+gkê	ghê
+rep	trả lời (reply)
+fl	theo dõi / người theo dõi (follow/follower, tùy ngữ cảnh)
+f4f	theo dõi chéo (follow for follow)
+cre	nguồn/ghi công (credit)
+cap	chú thích bài đăng (caption) / chụp màn hình / nói dối (tùy ngữ cảnh)
+cap màn hình	chụp màn hình
+no cap	nói thật, không nói dối
+clone	tài khoản phụ/giả
+acc clone	tài khoản phụ/giả
+tag	gắn thẻ
+seen	đã xem nhưng chưa trả lời
+block	chặn tài khoản
+mutual	người theo dõi/kết nối chung
+bio	tiểu sử hồ sơ
+story	tin/bài đăng tạm thời
+reel	video ngắn Reels
+threads	mạng xã hội Threads
+thread	chuỗi bài/cuộc thảo luận
+tóp tóp	TikTok
+tiktok	TikTok
+ig	Instagram
+yt	YouTube
+ins	Instagram
+dm	tin nhắn riêng (direct message)
+inbox	hộp thư/tin nhắn riêng
+content	nội dung
+creator	người sáng tạo nội dung
+kol	người có sức ảnh hưởng/chuyên gia có ảnh hưởng
+koc	người tiêu dùng có sức ảnh hưởng
+viral	lan truyền mạnh
+flop	không thành công/ít tương tác
+flop era	giai đoạn sa sút/ít được chú ý
+trend	xu hướng
+đu trend	làm theo xu hướng
+hot trend	xu hướng đang rất thịnh hành
+seeding	gieo thảo luận/quảng bá có chủ đích
+buff tương tác	tăng tương tác bằng cách nhân tạo
+clickbait	tiêu đề/nội dung câu nhấp chuột
+rage bait	nội dung cố tình gây phẫn nộ để kéo tương tác
+bait	nội dung/câu nói giăng bẫy để dụ phản ứng
+recap	tóm tắt/điểm lại
+review	đánh giá
+unbox	mở hộp
+livestream	phát trực tiếp
+live	phát trực tiếp / đang trực tuyến
+flex	khoe thành tích, tài sản hoặc ưu thế
+phông bạt	tô vẽ, khoe mẽ quá thực tế
+check var	kiểm chứng/xác minh thông tin
+var	đối chất, kiểm tra bằng chứng / va chạm tranh cãi (tùy ngữ cảnh)
+var nhau	đối chất/đấu khẩu với nhau
+xịt keo	sững sờ, đứng hình, cạn lời
+xịt keo cứng ngắc	hoàn toàn sững sờ/đứng hình
+trôn việt nam	trò chơi khăm/troll kiểu Việt Nam
+trôn trôn việt nam	đây chỉ là trò chơi khăm/troll
+mãi keo	mãi gắn bó / lời khen rất cuốn, rất đỉnh (tùy ngữ cảnh)
+mãi mận mãi keo	mãi gắn bó, thân thiết
+keo	đẹp, cuốn, xịn (lời khen; tùy cộng đồng)
+dịu keo	dịu dàng nhưng vẫn đẹp/cuốn
+slay	làm rất tốt; cực đẹp, nổi bật hoặc ngầu
+slay quá	quá xuất sắc/quá nổi bật
+vibe	bầu không khí, cảm giác hoặc phong cách
+chill	thư giãn, nhẹ nhàng
+healing	chữa lành, phục hồi tinh thần
+healing era	giai đoạn ưu tiên chữa lành/phục hồi bản thân
+suy	buồn và chìm trong suy nghĩ
+lụy	khó dứt khỏi tình cảm hoặc một người
+overthinking	suy nghĩ quá mức
+toxic	độc hại
+red flag	dấu hiệu cảnh báo trong một người/mối quan hệ
+green flag	dấu hiệu tích cực, đáng tin
+beige flag	đặc điểm lạ nhưng không hẳn tốt hay xấu
+ghost	đột ngột cắt liên lạc
+ghosting	hành vi đột ngột biến mất/cắt liên lạc
+situationship	mối quan hệ tình cảm mập mờ, chưa xác định
+talking stage	giai đoạn tìm hiểu trước khi chính thức yêu
+love bombing	dồn dập thể hiện tình cảm để chi phối
+gaslight	thao túng khiến người khác nghi ngờ nhận thức của mình
+gaslighting	hành vi thao túng tâm lý làm người khác tự nghi ngờ
+breadcrumbing	thả ít tín hiệu tình cảm để giữ người khác chờ đợi
+soft launch	hé lộ kín đáo người yêu/mối quan hệ
+hard launch	công khai rõ ràng người yêu/mối quan hệ
+crush	người mình thích
+simp	quá mê hoặc quá chiều một người
+pick me	người cố tỏ ra khác biệt để được chú ý/chọn
+pick-me girl	cô gái cố gây chú ý bằng cách hạ thấp người khác hoặc tỏ ra khác biệt
+pick-me boy	chàng trai cố gây chú ý bằng cách tỏ ra khác biệt/đáng thương
+rizz	sức hút và khả năng tán tỉnh
+w rizz	khả năng tán tỉnh tốt
+l rizz	khả năng tán tỉnh kém
+delulu	ảo tưởng/tự huyễn
+delulu is the solulu	ảo tưởng là giải pháp; câu đùa tự động viên
+manifest	hình dung, đặt ý định và tin mục tiêu sẽ thành hiện thực
+main character	nhân vật chính/tâm điểm
+main character energy	thần thái như nhân vật chính
+pov	góc nhìn (point of view)
+npc	người/hành vi máy móc như nhân vật nền trong trò chơi
+canon event	sự kiện bước ngoặt được xem là phải xảy ra
+aura	khí chất, thần thái
+aura points	điểm khí chất/thần thái
+sigma	hình mẫu độc lập, lạnh lùng, ngầu; thường dùng như meme
+skibidi	từ meme có thể mang nghĩa ngầu/tệ hoặc không có nghĩa rõ ràng
+brainrot	nội dung 'thối não' hoặc trạng thái bị ám bởi nội dung lặp lại
+cooked	tiêu rồi, hết cứu
+let him cook	để người đó tiếp tục thể hiện/làm việc
+let her cook	để cô ấy tiếp tục thể hiện/làm việc
+mid	tầm thường, không ấn tượng
+cringe	sượng, ngượng thay, khó xem
+sus	đáng ngờ
+lowkey	hơi/kín đáo; thật ra (tùy câu)
+highkey	rõ ràng/rất, không giấu
+stan	hâm mộ rất nhiệt tình
+fandom	cộng đồng người hâm mộ
+bias	thành viên/người mình thích nhất trong nhóm
+otp	cặp đôi yêu thích
+ship	ghép đôi/ủng hộ hai người thành một cặp
+anti	người phản đối/ghét một cá nhân hoặc nhóm
+drama	vụ tranh cãi/lùm xùm
+hint	dấu hiệu/gợi ý
+spoiler	tiết lộ trước nội dung
+plot twist	tình tiết đảo ngược bất ngờ
+meme	ảnh/câu/video chế lan truyền
+mood	đúng tâm trạng/cảm xúc hiện tại
+moodboard	bảng hình ảnh định hướng phong cách/cảm hứng
+core	phong cách/thẩm mỹ xoay quanh một chủ đề
+era	giai đoạn/phong cách hiện tại
+inspo	nguồn cảm hứng
+fit	bộ trang phục
+outfit	bộ trang phục
+ootd	trang phục trong ngày
+glow up	thay đổi theo hướng đẹp và tốt hơn
+visual	ngoại hình nổi bật
+visual shock	bất ngờ mạnh vì ngoại hình quá nổi bật
+gét gô	bắt đầu/đi thôi (let's go)
+ét ô ét	cứu với/SOS; câu cảm thán cầu cứu
+xin vía	xin lấy may từ điều tốt của người khác
+trộm vía	lời nói tránh để khen điều tốt, mong không bị xui
++1 máy	thêm một người/trường hợp nữa
+thắng đời 1-0	có một chiến thắng nhỏ trước cuộc đời
+thua đời 1-0	gặp một thất bại nhỏ trong đời
+chưa đủ wow	chưa đủ ấn tượng
+chưa có đủ wow	chưa đủ ấn tượng
+tẻn tẻn	hơi ngố/lố nhưng đáng yêu, vui nhộn
+thua gia cát lượng mỗi cái quạt	khen ai rất thông minh, mưu lược
+các mom ơi	cách gọi thân mật một nhóm bạn/cộng đồng
+mời đoàn mình lên núi	quá quê/xấu hổ, muốn trốn đi
+đoàn mình di chuyển lên núi	quá quê/xấu hổ, muốn trốn đi
+lên núi khỉ đuổi về xuống biển cá đẩy lên	xấu hổ đến mức không biết trốn đâu
+cho xin số tài khoản	lời đáp vui khi được khen, ngụ ý cảm ơn bằng chuyển khoản
+trán phát wifi	cau có/bực bội, trán nhăn
+tụi mình được sản xuất theo lô hả	hai người quá giống nhau
+giảm sức mạnh con tướng này	khen ai quá giỏi/đẹp/nổi bật
+tuyệt đối điện ảnh	đẹp/ấn tượng như cảnh phim
+absolute cinema	tuyệt đối điện ảnh; quá ấn tượng như cảnh phim
+ôi thôi chéc	câu cảm thán bất ngờ, cạn lời trước tình huống khó đỡ
+performative man	người đàn ông thể hiện theo xu hướng, mang tính trình diễn
+performative male	người đàn ông thể hiện theo xu hướng, mang tính trình diễn
+khu tự trị	không gian/mối quan hệ riêng với luật lệ và cách trêu đùa riêng
+vuýp	VIP; cao cấp, xịn hoặc quan trọng
+hdpe thì ngon luôn	câu meme khẳng định một lựa chọn là ổn/ngon/đáng làm
+you only live once	bạn chỉ sống một lần
+yolo	sống hết mình vì chỉ sống một lần
