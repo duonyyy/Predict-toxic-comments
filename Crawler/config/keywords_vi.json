@@ -124,6 +124,79 @@
         "hoahao"
       ]
     },
+    "Dân tộc/sắc tộc": {
+      "neutral_keywords": [
+        "dân tộc",
+        "dân tộc thiểu số",
+        "người dân tộc",
+        "người Mông",
+        "người H'Mông",
+        "người Dao",
+        "người Chăm",
+        "người Khmer",
+        "Ê Đê",
+        "Gia Rai",
+        "Ba Na",
+        "người Thái",
+        "người Tày",
+        "người Nùng",
+        "người Kinh",
+        "cộng đồng bản địa",
+        "sắc tộc"
+      ],
+      "toxic_enriched_keywords": [
+        "kỳ thị dân tộc",
+        "phân biệt dân tộc",
+        "miệt thị dân tộc",
+        "ghét người dân tộc",
+        "chửi người dân tộc",
+        "xúc phạm người Khmer",
+        "khinh dân tộc thiểu số"
+      ],
+      "hashtags": [
+        "dantoc",
+        "dantocithieuso",
+        "dantocviet",
+        "sactoc",
+        "nguoimong",
+        "nguoidao",
+        "nguoicham",
+        "nguoikhmer"
+      ]
+    },
+    "Politics": {
+      "neutral_keywords": [
+        "chính trị",
+        "chính phủ",
+        "nhà nước",
+        "quốc hội",
+        "chính sách",
+        "đảng",
+        "bầu cử",
+        "lãnh đạo",
+        "thủ tướng",
+        "chủ tịch nước",
+        "nghị quyết",
+        "đại biểu quốc hội"
+      ],
+      "toxic_enriched_keywords": [
+        "kỳ thị chính trị",
+        "miệt thị chính trị gia",
+        "chửi chính quyền",
+        "chửi chính phủ",
+        "công kích chính sách",
+        "phản đối chính sách",
+        "tham nhũng chính phủ",
+        "ghét đảng"
+      ],
+      "hashtags": [
+        "chinhtri",
+        "chinhphu",
+        "quochoi",
+        "baucu",
+        "chinhsach"
+      ]
+    },
     "Giới tính": {
       "neutral_keywords": [
         "giới tính",

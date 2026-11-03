@@ -1,0 +1,48 @@
+{
+  "version": "gap-v1",
+  "language": "vi",
+  "region_code": "VN",
+  "note": "Focused retrieval queries for labels with remaining gaps. Queries are candidate retrieval only; semantic annotation is required.",
+  "categories": {
+    "Dân tộc/sắc tộc": {
+      "neutral_keywords": [],
+      "toxic_enriched_keywords": [
+        "kỳ thị dân tộc",
+        "phân biệt dân tộc",
+        "miệt thị dân tộc",
+        "ghét người dân tộc",
+        "chửi người dân tộc",
+        "xúc phạm người Khmer",
+        "khinh dân tộc thiểu số"
+      ],
+      "hashtags": []
+    },
+    "Politics": {
+      "neutral_keywords": [
+        "chính trị",
+        "chính phủ",
+        "nhà nước",
+        "quốc hội",
+        "chính sách",
+        "đảng",
+        "bầu cử",
+        "lãnh đạo",
+        "thủ tướng",
+        "chủ tịch nước",
+        "nghị quyết",
+        "đại biểu quốc hội"
+      ],
+      "toxic_enriched_keywords": [
+        "kỳ thị chính trị",
+        "miệt thị chính trị gia",
+        "chửi chính quyền",
+        "chửi chính phủ",
+        "công kích chính sách",
+        "phản đối chính sách",
+        "tham nhũng chính phủ",
+        "ghét đảng"
+      ],
+      "hashtags": []
+    }
+  }
+}
