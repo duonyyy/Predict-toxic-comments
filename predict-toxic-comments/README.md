@@ -3,11 +3,11 @@
 ---
 
 ## 1. 📌 Giới thiệu Đề tài
-Hệ thống **DS108 Real-Time StreamGuard** là giải pháp phân tích và kiểm duyệt bình luận phát trực tiếp (YouTube Live Chat) theo thời gian thực, áp dụng kiến trúc **Phân loại Phân cấp 2 tầng (*Hierarchical 2-stage Toxic Language Detection*)** dựa trên kết quả nghiên cứu và thực nghiệm của đề tài **DS108**:
+Hệ thống **DS108 Real-Time StreamGuard** là giải pháp phân tích và kiểm duyệt bình luận phát trực tiếp đa nền tảng (**YouTube Live** & **TikTok Live**) theo thời gian thực, áp dụng kiến trúc **Phân loại Phân cấp 2 tầng (*Hierarchical 2-stage Toxic Language Detection*)** dựa trên kết quả nghiên cứu và thực nghiệm của đề tài **DS108**:
 
 ```mermaid
 flowchart TD
-    A["Bình luận Mạng Xã Hội (Input Live Chat)"] --> B{"Tác vụ 1: Phân loại Độc hại<br>(PhoBERT-base-v2)"}
+    A["Bình luận Mạng Xã Hội (YouTube / TikTok Live Chat)"] --> B{"Tác vụ 1: Phân loại Độc hại<br>(PhoBERT-base-v2)"}
     B -->|NON-TOXIC| C["NON-TOXIC (An toàn / Hợp lệ)<br>🟢 Hành động: Safe"]
     B -->|TOXIC| D{"Tác vụ 2: Kiểu biểu đạt<br>(XLM-RoBERTa-base)"}
     D -->|EXPLICIT| E["EXPLICIT (Công kích trực tiếp)<br>🔴 Hành động: Ban / Hide"]
@@ -49,15 +49,18 @@ Hệ thống tự động hóa công tác điều hành phòng chat theo các ng
 
 ---
 
-## 4. 🏗 Kiến Trúc Kỹ Thuật (System Architecture)
+## 4. 🏗 Kiến Trúc Kỹ Thuật Đa Nền Tảng (System Architecture)
 
 ```mermaid
 graph TD
-    User[Người dùng YouTube] -->|Gửi bình luận| YT[YouTube Live Stream]
+    UserYT[Người dùng YouTube] -->|Chat| YT[YouTube Live Stream]
+    UserTT[Người dùng TikTok] -->|Chat| TT[TikTok Live Stream]
     
-    subgraph "Thu thập & Đệm thông điệp"
-        Backend_Crawl[YouTube Crawler Worker] -->|Fetch Live Chat| YT
-        Backend_Crawl -->|JSON Payload| Kafka[Apache Kafka Broker<br>Topic: 'comment']
+    subgraph "Thu thập & Đệm thông điệp (Crawlers)"
+        YT -->|YouTube Data API v3| CrawlerYT[YouTube Crawler Worker]
+        TT -->|TikTokLive Client| CrawlerTT[TikTok Live Crawler Worker]
+        CrawlerYT -->|JSON Payload| Kafka[Apache Kafka Broker<br>Topic: 'comment']
+        CrawlerTT -->|JSON Payload| Kafka
     end
 
     subgraph "Suy luận AI Phân cấp (ML Inference)"
@@ -85,8 +88,10 @@ graph TD
 
 ```text
 predict-toxic-comments/
-├── backend/                 # Node.js Express + TypeScript (Crawl YouTube, SSE, MongoDB, Redis)
-├── frontend/                # Next.js 15 Dashboard (Biểu đồ phân cấp, Realtime stream, Leaderboard)
+├── backend/                 # Node.js Express + TypeScript (Crawl YouTube & TikTok, SSE, Redis, Mongo)
+│   ├── scripts/             # Python worker cào trực tiếp TikTok Live (`tiktok_crawler.py`)
+│   └── src/                 # Services & controllers cho YouTube & TikTok
+├── frontend/                # Next.js 15 Dashboard trực quan (Biểu đồ phân cấp, Bộ lọc, Leaderboard)
 ├── python_consumer/         # Python Consumer tiêu thụ Kafka & suy luận mô hình phân cấp 2 tầng
 ├── model/                   # Thư mục chứa checkpoints .pt (PhoBERT, XLM-R) & tài liệu
 ├── docker-compose-light.yml # Bản Docker Compose tối ưu RAM (1 Kafka + Redis + Consumer)
@@ -138,12 +143,13 @@ docker compose -f docker-compose-light.yml up -d
    ```
 2. Mở trình duyệt tại: **`http://localhost:3000`**.
 
-### Bước 4: Kiểm thử Theo dõi Livestream
+### Bước 4: Kiểm thử Theo dõi Livestream (YouTube hoặc TikTok)
 
-1. Dán đường dẫn một video hoặc Livestream YouTube bất kỳ vào ô tìm kiếm:
-   *(Ví dụ: `https://www.youtube.com/watch?v=...`)*
-2. Bấm **Bắt đầu theo dõi**.
-3. Dashboard sẽ tự động:
+1. **Với YouTube Live:** Chọn tab YouTube và dán link (ví dụ: `https://www.youtube.com/watch?v=...`).
+2. **Với TikTok Live:** Chọn tab TikTok và dán link hoặc username (ví dụ: `https://www.tiktok.com/@annie_tran.27/live` hoặc `@annie_tran.27`).
+   *(Hệ thống hỗ trợ tự động kết nối TikTokLive thật, hoặc chuyển sang chế độ mô phỏng thông minh nếu streamer đang offline).*
+3. Bấm **Bắt đầu phân tích**.
+4. Dashboard sẽ tự động:
    - Thu thập luồng bình luận trực tiếp.
    - Hiển thị nhãn phân cấp: `TOXIC` / `NON-TOXIC`, `EXPLICIT` (Trực tiếp) vs `IMPLICIT` (Mỉa mai).
    - Đưa ra hành vi xử phạt: `Ban`, `Hide`, `Pending`, `Safe`.

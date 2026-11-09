@@ -8,7 +8,7 @@ import { ToxicityChart } from '@/components/ToxicityChart';
 import { ToxicLeaderboard } from '@/components/ToxicLeaderboard';
 import { MessageList } from '@/components/MessageList';
 import { StatsOverview } from '@/components/StatsOverview';
-import { youtubeService } from '@/services/youtubeService';
+import { streamService } from '@/services/streamService';
 import {
     ShieldCheck,
     Zap,
@@ -16,7 +16,6 @@ import {
     Radio,
     ExternalLink,
     AlertCircle,
-    CheckCircle2,
 } from 'lucide-react';
 
 export default function Home() {
@@ -26,30 +25,37 @@ export default function Home() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     // Custom Hook to manage all Live logic (SSE, Metrics, Messages, Leaderboard)
-    const { messages, leaderboard, metrics, crawlerStatus, videoId } = useLiveStream(url, isTracking);
+    const { messages, leaderboard, metrics, crawlerStatus, videoId, platform } = useLiveStream(url, isTracking);
 
     const handleStart = async () => {
         setErrorMessage(null);
-        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const trimmed = url.trim();
+        const isYT = trimmed.includes('youtube.com') || trimmed.includes('youtu.be');
+        const isTT = trimmed.includes('tiktok.com') || trimmed.startsWith('@') || trimmed.length > 2;
+
+        if (isYT || isTT) {
             setIsLoading(true);
             try {
-                await youtubeService.startTracking(url);
+                await streamService.startTracking(trimmed);
                 setIsTracking(true);
             } catch (error: any) {
                 console.error('Lỗi khi bắt đầu theo dõi:', error);
-                setErrorMessage('Không thể kết nối đến Backend hoặc link YouTube không hợp lệ. Vui lòng kiểm tra lại Backend.');
+                setErrorMessage(
+                    error.response?.data?.message ||
+                    'Không thể kết nối đến Backend hoặc link stream không hợp lệ. Vui lòng kiểm tra lại.'
+                );
             } finally {
                 setIsLoading(false);
             }
         } else {
-            setErrorMessage('Vui lòng nhập đường link YouTube hợp lệ (ví dụ: https://www.youtube.com/watch?v=...)');
+            setErrorMessage('Vui lòng nhập đường link YouTube Live hoặc TikTok Live (@username).');
         }
     };
 
     const handleStop = async () => {
         setIsLoading(true);
         try {
-            await youtubeService.stopTracking(url, 'stop');
+            await streamService.stopTracking(url, 'stop');
             setIsTracking(false);
         } catch (error) {
             console.error('Lỗi khi dừng theo dõi:', error);
@@ -58,6 +64,9 @@ export default function Home() {
             setIsLoading(false);
         }
     };
+
+    const isTikTok = platform === 'tiktok' || (videoId && videoId.startsWith('tiktok-'));
+    const cleanTikTokUser = videoId ? videoId.replace('tiktok-', '') : '';
 
     return (
         <div className="relative min-h-screen bg-[#07080d] text-gray-100 overflow-x-hidden selection:bg-red-500/30 selection:text-white">
@@ -110,7 +119,7 @@ export default function Home() {
                             >
                                 <div className="h-2 w-2 rounded-full bg-red-500 animate-ping" />
                                 <span className="text-xs font-black tracking-widest text-red-400 uppercase">
-                                    DS108 AI Engine • PhoBERT & XLM-RoBERTa
+                                    DS108 AI Engine • YouTube & TikTok Live
                                 </span>
                             </motion.div>
 
@@ -130,7 +139,7 @@ export default function Home() {
 
                                 <p className="mx-auto max-w-xl text-base sm:text-lg text-gray-400 leading-relaxed font-normal">
                                     Nhận diện phát ngôn độc hại và bóc tách kiểu biểu đạt trực tiếp (Explicit) vs ẩn ý mỉa mai (Implicit)
-                                    trên YouTube Livestream chuẩn nghiên cứu DS108.
+                                    trên <strong>YouTube Live</strong> & <strong>TikTok Live</strong> chuẩn nghiên cứu DS108.
                                 </p>
                             </motion.div>
 
@@ -162,10 +171,10 @@ export default function Home() {
                                 <div className="p-4 rounded-2xl border border-gray-800/80 bg-[#12141e]/60 backdrop-blur-md">
                                     <div className="flex items-center gap-2.5 text-red-400 mb-1.5 font-bold text-sm">
                                         <Zap className="h-4 w-4" />
-                                        <span>Xử Lý Luồng Real-time</span>
+                                        <span>Đa Nền Tảng (YT + TikTok)</span>
                                     </div>
                                     <p className="text-xs text-gray-400">
-                                        Tiêu thụ và chấm điểm bình luận tốc độ cao qua Kafka, Redis và Server-Sent Events (SSE).
+                                        Hỗ trợ stream trực tiếp từ YouTube Live và TikTok Live qua Kafka, Redis và SSE.
                                     </p>
                                 </div>
 
@@ -218,7 +227,7 @@ export default function Home() {
                                             StreamGuard AI
                                         </span>
                                         <span className="text-[10px] text-gray-400 font-medium">
-                                            Live Monitor
+                                            {isTikTok ? 'TikTok Live Monitor' : 'YouTube Live Monitor'}
                                         </span>
                                     </div>
                                 </div>
@@ -240,12 +249,16 @@ export default function Home() {
                                 <div className="flex items-center gap-2.5 shrink-0">
                                     {videoId && (
                                         <a
-                                            href={`https://www.youtube.com/watch?v=${videoId}`}
+                                            href={
+                                                isTikTok
+                                                    ? `https://www.tiktok.com/@${cleanTikTokUser}/live`
+                                                    : `https://www.youtube.com/watch?v=${videoId}`
+                                            }
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-800 bg-[#141724] text-xs font-semibold text-gray-300 hover:text-white hover:border-gray-700 transition-colors"
                                         >
-                                            <span>Xem Stream</span>
+                                            <span>{isTikTok ? 'Xem TikTok Live' : 'Xem YouTube Live'}</span>
                                             <ExternalLink className="h-3 w-3" />
                                         </a>
                                     )}
@@ -268,42 +281,34 @@ export default function Home() {
                                             }`}
                                         />
                                         <span className="uppercase text-[11px] tracking-wider">
-                                            {crawlerStatus ? crawlerStatus : 'Đang kết nối...'}
+                                            {crawlerStatus || (isTikTok ? 'TikTok Live' : 'YouTube Live')}
                                         </span>
                                     </div>
                                 </div>
                             </div>
                         </header>
 
-                        {/* Main Dashboard Body */}
-                        <main className="flex-grow p-4 sm:p-6 lg:p-8">
-                            <div className="mx-auto max-w-[1700px] space-y-6">
-                                {/* Top KPI Metric Cards */}
-                                <StatsOverview
-                                    messages={messages}
-                                    metrics={metrics}
-                                    leaderboard={leaderboard}
-                                />
+                        {/* Main Grid Content */}
+                        <div className="mx-auto w-full max-w-[1700px] flex-grow p-4 sm:p-6 space-y-6">
+                            {/* Row 1: KPI Stats Overview */}
+                            <StatsOverview messages={messages} metrics={metrics} leaderboard={leaderboard} />
 
-                                {/* Middle Row: Toxicity Trend Chart & Toxic Leaderboard */}
-                                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                                    <div className="lg:col-span-2 min-h-[340px]">
-                                        <ToxicityChart data={metrics} />
-                                    </div>
-                                    <div className="min-h-[340px]">
-                                        <ToxicLeaderboard data={leaderboard} />
-                                    </div>
+                            {/* Row 2: Live Activity Chart */}
+                            <div className="w-full">
+                                <ToxicityChart data={metrics} />
+                            </div>
+
+                            {/* Row 3: Messages Stream & Leaderboard Split */}
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                <div className="lg:col-span-2 min-h-[580px]">
+                                    <MessageList messages={messages} totalMessages={messages.length} />
                                 </div>
 
-                                {/* Bottom Row: Live Comment Stream Feed */}
-                                <div className="min-h-[500px]">
-                                    <MessageList
-                                        messages={messages}
-                                        totalMessages={messages.length}
-                                    />
+                                <div className="lg:col-span-1 min-h-[580px]">
+                                    <ToxicLeaderboard data={leaderboard} />
                                 </div>
                             </div>
-                        </main>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

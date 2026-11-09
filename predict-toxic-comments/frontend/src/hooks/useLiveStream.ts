@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useCallback, useMemo } from 'react';
 import { CONFIG } from '@/config';
-import { youtubeService } from '@/services/youtubeService';
+import { streamService, extractStreamId, StreamPlatform } from '@/services/streamService';
 
 export interface Message {
     _id?: string;
@@ -68,7 +68,6 @@ function liveStreamReducer(state: State, action: Action): State {
         case 'ADD_NEW_COMMENTS':
             return {
                 ...state,
-                // Đẩy comment mới vào cuối mảng (tốt hơn cho React rendering), giữ lại tối đa MAX_MESSAGES_CACHE
                 messages: [...state.messages, ...action.payload].slice(-CONFIG.MAX_MESSAGES_CACHE)
             };
         case 'SET_LEADERBOARD':
@@ -98,14 +97,7 @@ function liveStreamReducer(state: State, action: Action): State {
 export const useLiveStream = (url: string, isTracking: boolean) => {
     const [state, dispatch] = useReducer(liveStreamReducer, initialState);
 
-    // Extract video ID from YouTube URL
-    const extractVideoId = useCallback((url: string) => {
-        const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[7].length === 11) ? match[7] : null;
-    }, []);
-
-    const videoId = useMemo(() => extractVideoId(url), [url, extractVideoId]);
+    const { streamId: videoId, platform } = useMemo(() => extractStreamId(url), [url]);
 
     useEffect(() => {
         if (!isTracking) {
@@ -115,11 +107,11 @@ export const useLiveStream = (url: string, isTracking: boolean) => {
 
         if (!videoId) return;
 
-        // --- Khởi tạo SSE Connection ---
-        const eventSource = youtubeService.sseStreamEvents(videoId);
+        // --- Khởi tạo SSE Connection (hỗ trợ cả YouTube & TikTok) ---
+        const eventSource = streamService.sseStreamEvents(videoId, platform);
 
         eventSource.onopen = () => {
-            console.log('SSE connected to video:', videoId);
+            console.log(`SSE connected to ${platform} stream:`, videoId);
         };
 
         // Comments ban đầu
@@ -133,8 +125,12 @@ export const useLiveStream = (url: string, isTracking: boolean) => {
                 author_image: c.author_image,
                 message: c.message,
                 published_at: c.published_at,
+                toxicity: c.toxicity,
+                expression_type: c.expression_type,
                 toxic_label: c.toxic_label,
                 toxic_category: c.toxic_category,
+                toxic_score: c.toxic_score,
+                implicit_score: c.implicit_score,
                 recommended_action: c.recommended_action,
             }));
             dispatch({ type: 'SET_INITIAL_COMMENTS', payload: formatted });
@@ -154,13 +150,14 @@ export const useLiveStream = (url: string, isTracking: boolean) => {
 
         // Metrics ban đầu
         eventSource.addEventListener('initial_metrics', (event: any) => {
-            console.log("initial_metrics", event.data);
             const data: any[] = JSON.parse(event.data);
             const formatted: MetricData[] = data.map((m: any) => ({
                 video_id: m.video_id,
                 window_start: m.window_start,
                 total_comments: m.total_comments,
                 toxic_count: m.toxic_count || 0,
+                explicit_count: m.explicit_count || 0,
+                implicit_count: m.implicit_count || 0,
                 unique_viewers: m.unique_viewers || 0
             }));
             dispatch({ type: 'SET_INITIAL_METRICS', payload: formatted });
@@ -174,6 +171,8 @@ export const useLiveStream = (url: string, isTracking: boolean) => {
                 window_start: metric.window_start,
                 total_comments: metric.total_comments,
                 toxic_count: metric.toxic_count || 0,
+                explicit_count: metric.explicit_count || 0,
+                implicit_count: metric.implicit_count || 0,
                 unique_viewers: metric.unique_viewers || 0
             };
             dispatch({ type: 'UPDATE_METRICS', payload: formatted });
@@ -182,7 +181,6 @@ export const useLiveStream = (url: string, isTracking: boolean) => {
         // Trạng thái crawler
         eventSource.addEventListener('crawler_status', (event: any) => {
             const data: { type: string } = JSON.parse(event.data);
-            console.log("crawler_status", data.type);
             dispatch({ type: 'SET_CRAWLER_STATUS', payload: data.type });
             if (data.type === 'stopped') {
                 eventSource.close();
@@ -195,13 +193,13 @@ export const useLiveStream = (url: string, isTracking: boolean) => {
 
         return () => {
             console.log('Closing SSE connection');
-
             eventSource.close();
         };
-    }, [isTracking, url]);
+    }, [isTracking, videoId, platform]);
 
     return {
         ...state,
-        videoId
+        videoId,
+        platform,
     };
 };
